@@ -1,4 +1,37 @@
 apply plugin: 'java'
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        jar(MavenPublication) {
+            groupId "com.zmarkan.echoer"
+            version = "1.0.0"
+            artifactId "echoer"
+
+            // Tell maven to prepare the generated "*.aar" file for publishing
+            artifact("$buildDir/libs/echoer.jar")
+        }
+    }
+}
+
+artifactory {
+    contextUrl = 'http://artifactorysample-env.elasticbeanstalk.com'
+    publish {
+        repository {
+            repoKey = 'libs-release-local'
+
+            username = "admin"
+            password = "password"
+        }
+        defaults {
+            publications('jar')
+            publishArtifacts = true
+            properties = ['qa.level': 'basic', 'dev.team': 'core']
+            publishPom = true
+        }
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
