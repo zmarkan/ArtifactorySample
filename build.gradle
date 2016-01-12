@@ -13,7 +13,13 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven { url "http://artifactorysample-env.elasticbeanstalk.com/libs-release-local/" }
+        maven {
+            url "http://artifactorysample-env.elasticbeanstalk.com/libs-release-local/"
+            credentials {
+                username 'consumer'
+                password 'icanread'
+            }
+        }
     }
 }
 
